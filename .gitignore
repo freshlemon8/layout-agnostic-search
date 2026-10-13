@@ -1,0 +1,18 @@
+# Сборка
+dist/
+
+# Логи тестов и вложенных сессий
+test-logs/
+
+# Извлечённые исходники GNOME Shell (не наш код)
+ref/
+
+# Служебные отчёты агента
+NOTES.md
+REPORT.md
+publish-prep-report.md
+
+# Системный мусор
+.DS_Store
+*.swp
+*~
