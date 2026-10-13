@@ -1,0 +1,8 @@
+{
+    "uuid": "layout-agnostic-search@freshlemon8.github.io",
+    "name": "Layout-Agnostic Search",
+    "description": "Search applications by QWERTY, ЙЦУКЕН-RU and ЙЦУКЕН-UA keyboard layouts",
+    "shell-version": ["50"],
+    "url": "https://github.com/freshlemon8/layout-agnostic-search",
+    "session-modes": ["user"]
+}
