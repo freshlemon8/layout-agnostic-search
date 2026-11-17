@@ -1,8 +1,8 @@
 # Layout-Agnostic Search
 
-GNOME Shell extension that allows finding applications by entering queries in a mismatched keyboard layout. Translates Cyrillic input (ЙЦУКЕН-RU, ЙЦУКЕН-UA) to QWERTY so that applications with Latin names are found.
+GNOME Shell extension that allows finding applications by entering queries in a mismatched keyboard layout: QWERTY, ЙЦУКЕН-UA, or ЙЦУКЕН-RU.
 
-Example: the query `ашкуащч` in Russian layout finds Firefox, and `диски` matches Files.
+Example: the query `ашкуащч` finds Firefox, and `ыеуфь` matches Steam.
 
 ## Supported GNOME Shell versions
 
@@ -34,9 +34,7 @@ gnome-extensions install --force dist/layout-agnostic-search@freshlemon8.github.
 
 ## How it works
 
-When the user types a query in Cyrillic, the extension translates each word to QWERTY using both ЙЦУКЕН-RU and ЙЦУКЕН-UA keyboard maps. The original query is always kept, so applications with Cyrillic names are also found. All results are merged and deduplicated, with the original query results appearing first.
-
-Latin input is not translated -- it is searched as-is.
+The extension performs additional search variants for the original query, the same text translated to ЙЦУКЕН-RU, and the same text translated to ЙЦУКЕН-UA. Results are merged with the original results first.
 
 ## Tests
 
