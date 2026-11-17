@@ -1,18 +1,20 @@
-# Сборка
+# Build
 dist/
 
-# Логи тестов и вложенных сессий
+# Test and session logs
 test-logs/
 
-# Извлечённые исходники GNOME Shell (не наш код)
+# Extracted GNOME Shell upstream sources
 ref/
 
-# Служебные отчёты агента
+# Agent reports and plans
 NOTES.md
 REPORT.md
 publish-prep-report.md
+PLAN.md
+*plan*.md
 
-# Системный мусор
+# System files
 .DS_Store
 *.swp
 *~

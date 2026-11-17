@@ -5,7 +5,7 @@ import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import { buildQueries, mergeResults } from './translator.js';
 
-// Подтверждено в NOTES.md: getSubsearchResultSet вызывает getInitialResultSet.
+// Confirmed in NOTES.md: getSubsearchResultSet calls getInitialResultSet.
 const PATCH_SUBSEARCH = false;
 
 function findAppProvider() {
@@ -55,7 +55,7 @@ export default class LayoutAgnosticSearchExtension extends Extension {
         try {
             const provider = findAppProvider();
             if (!provider)
-                throw new Error('AppSearchProvider instance not found (см. NOTES.md, PROVIDER_PATH)');
+                throw new Error('AppSearchProvider instance not found (see NOTES.md, PROVIDER_PATH)');
 
             const initialOwner = findOwner(provider, 'getInitialResultSet');
             if (!initialOwner)
@@ -90,7 +90,7 @@ export default class LayoutAgnosticSearchExtension extends Extension {
             if (owner[name] === patched) {
                 owner[name] = original;
             } else {
-                console.warn(`layout-agnostic-search: ${name} был заменён другим кодом, откат пропущен`);
+                console.warn(`layout-agnostic-search: ${name} was replaced by other code, rollback skipped`);
             }
         }
         this._patches = [];

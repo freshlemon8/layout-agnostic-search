@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright (C) 2026 Vladislav Tereshchenko
-// Чистый модуль. Не импортирует resource:// и gi://, поэтому работает и в gjs -m, и в GNOME Shell.
+// Pure module. Does not import resource:// or gi://, so it works in both gjs -m and GNOME Shell.
 
-export const MAX_QUERY_LENGTH = 128;  // суммарная длина запроса, дальше варианты не строятся
-export const MIN_TERM_LENGTH = 2;     // короче — варианты не строятся
+export const MAX_QUERY_LENGTH = 128; // Total query length; beyond this, variants are not built
+export const MIN_TERM_LENGTH = 2; // Shorter terms do not generate variants
 
-// Таблица латиница (клавиши US QWERTY, без Shift) → ЙЦУКЕН-RU
+// Latin (US QWERTY keys, without Shift) to JCUKEN-RU mapping table
 const RU_FROM_LATIN = new Map([
     ['q', 'й'], ['w', 'ц'], ['e', 'у'], ['r', 'к'], ['t', 'е'],
     ['y', 'н'], ['u', 'г'], ['i', 'ш'], ['o', 'щ'], ['p', 'з'],
@@ -17,13 +17,13 @@ const RU_FROM_LATIN = new Map([
     ['`', 'ё'],
 ]);
 
-// Таблица латиница → ЙЦУКЕН-UA: отличия от RU
+// Latin to JCUKEN-UA mapping table: differences from RU
 const UA_FROM_LATIN = new Map(RU_FROM_LATIN);
 UA_FROM_LATIN.set('s', 'і');
 UA_FROM_LATIN.set(']', 'ї');
 UA_FROM_LATIN.set("'", 'є');
 UA_FROM_LATIN.set('\\', 'ґ');
-UA_FROM_LATIN.delete('`');   // в UA нет ё
+UA_FROM_LATIN.delete('`'); // Ukrainian layout does not have yo (ё)
 
 function invert(map) {
     const result = new Map();
@@ -44,8 +44,9 @@ const CYRILLIC_RE = /\p{Script=Cyrillic}/u;
 const LETTER_RE = /\p{L}/u;
 
 /**
- * Посимвольная замена по таблице. Если хотя бы один символ не найден
- * в таблице (цифры, пробелы, неизвестные знаки), возвращает null.
+ * Character-by-character replacement using a mapping table.
+ * If at least one character is not found in the table (digits, spaces, unknown symbols),
+ * returns null.
  */
 function mapTerm(term, table) {
     let result = '';
@@ -59,8 +60,8 @@ function mapTerm(term, table) {
 }
 
 /**
- * Возвращает альтернативу для одного термина или null.
- * Переводит только кириллицу в латиницу (QWERTY). Латиница не переводится.
+ * Returns an alternative for a single term or null.
+ * Translates only Cyrillic to Latin (QWERTY). Latin is not translated.
  */
 function alternativeFor(term, layout) {
     if (!LETTER_RE.test(term))
@@ -79,17 +80,17 @@ function hasCyrillic(terms) {
 }
 
 /**
- * Строит список запросов для поиска.
- * Первый элемент — всегда исходный запрос.
- * Далее — запросы, где каждый термин переведён из кириллицы в QWERTY (RU и UA варианты).
- * Дубликаты удаляются.
+ * Builds a list of search queries.
+ * The first element is always the original query.
+ * Following elements are queries where each term is translated from Cyrillic to QWERTY (RU and UA variants).
+ * Duplicates are removed.
  *
- * Когда исходный запрос содержит кириллицу, он остаётся в списке,
- * чтобы GNOME Shell одновременно показал приложения с кириллическими именами
- * (например, «ашкудишки.txt») и результаты перевода (например, Firefox для «ашку»).
+ * When the original query contains Cyrillic, it remains in the list
+ * so GNOME Shell can simultaneously show applications with Cyrillic names
+ * and translation results (e.g. Firefox for "ашку").
  *
- * @param {string[]} terms — термины из поиска Shell
- * @returns {string[][]} список запросов, каждый запрос — массив терминов
+ * @param {string[]} terms - terms from Shell search
+ * @returns {string[][]} list of queries, each query is an array of terms
  */
 export function buildQueries(terms) {
     const original = [...terms];
@@ -123,7 +124,7 @@ export function buildQueries(terms) {
 export { hasCyrillic };
 
 /**
- * Объединяет наборы идентификаторов результатов в порядке появления, без дубликатов.
+ * Merges sets of result identifiers in order of appearance, without duplicates.
  * @param {string[][]} resultSets
  * @returns {string[]}
  */

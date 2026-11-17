@@ -15,10 +15,10 @@ Other versions were not checked.
 
 ### From archive
 
-1. Download `layout-agnostic-search@freshlemon8.github.io.zip` from the release page.
+1. Download `layout-agnostic-search@freshlemon8.github.io.shell-extension.zip` from the release page.
 2. Run:
    ```bash
-   gnome-extensions install --force layout-agnostic-search@freshlemon8.github.io.zip
+   gnome-extensions install --force layout-agnostic-search@freshlemon8.github.io.shell-extension.zip
    gnome-extensions enable layout-agnostic-search@freshlemon8.github.io
    ```
 3. Restart the session (Alt+F2, `r` on Xorg, or log out and back in on Wayland).
@@ -28,9 +28,13 @@ Other versions were not checked.
 ```bash
 git clone https://github.com/freshlemon8/layout-agnostic-search
 cd layout-agnostic-search
-gnome-extensions pack --force --out-dir=dist src
-gnome-extensions install --force dist/layout-agnostic-search@freshlemon8.github.io.zip
+mkdir -p dist
+gnome-extensions pack --force --extra-source=translator.js --out-dir=dist src
+gnome-extensions install --force dist/layout-agnostic-search@freshlemon8.github.io.shell-extension.zip
+gnome-extensions enable layout-agnostic-search@freshlemon8.github.io
 ```
+
+Restart the session (Alt+F2, `r` on Xorg, or log out and back in on Wayland).
 
 ## How it works
 

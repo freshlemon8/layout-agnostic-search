@@ -3,5 +3,7 @@
     "name": "Layout-Agnostic Search",
     "description": "Search applications by translating Cyrillic input to QWERTY",
     "shell-version": ["50", "51"],
-    "url": "https://github.com/freshlemon8/layout-agnostic-search"
+    "url": "https://github.com/freshlemon8/layout-agnostic-search",
+    "version": 2,
+    "version-name": "2.0"
 }
