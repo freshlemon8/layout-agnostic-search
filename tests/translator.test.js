@@ -16,21 +16,18 @@ function check(name, condition) {
 const has = (queries, query) =>
     queries.some(q => JSON.stringify(q) === JSON.stringify(query));
 
-// Латиница → RU / UA
-check('firefox → ашкуащч (RU)',
-    has(buildQueries(['firefox']), ['ашкуащч']));
+// Латиница не переводится (только кириллица → латиница)
+check('firefox не транслируется в кириллицу',
+    buildQueries(['firefox']).length === 1);
 
-check('terminal → еукьштфд (RU)',
-    has(buildQueries(['terminal']), ['еукьштфд']));
+check('terminal не транслируется в кириллицу',
+    buildQueries(['terminal']).length === 1);
 
-check('steam → ыеуфь (RU)',
-    has(buildQueries(['steam']), ['ыеуфь']));
+check('steam не транслируется в кириллицу',
+    buildQueries(['steam']).length === 1);
 
-check('steam → іеуфь (UA, отличие от RU по клавише s)',
-    has(buildQueries(['steam']), ['іеуфь']));
-
-check('gimp → пшьз (RU)',
-    has(buildQueries(['gimp']), ['пшьз']));
+check('gimp не транслируется в кириллицу',
+    buildQueries(['gimp']).length === 1);
 
 // Кириллица → латиница
 check('диски → lbcrb (обратная трансляция)',
@@ -51,8 +48,8 @@ const numeric = buildQueries(['gimp', '2.10']);
 check('термин "2.10" не транслируется ни в один вариант',
     numeric.every(q => q[1] === '2.10'));
 
-check('запрос "gimp 2.10" даёт варианты только для первого термина',
-    numeric.length >= 2);
+check('запрос "gimp 2.10" не даёт вариантов (латиница не переводится)',
+    numeric.length === 1);
 
 // Пограничные случаи
 check('пустой список → один запрос',

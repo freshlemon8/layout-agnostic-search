@@ -60,21 +60,33 @@ function mapTerm(term, table) {
 
 /**
  * Возвращает альтернативу для одного термина или null.
- * Направление выбирается по алфавиту термина: кириллица → латиница, иначе латиница → кириллица.
+ * Переводит только кириллицу в латиницу (QWERTY). Латиница не переводится.
  */
 function alternativeFor(term, layout) {
     if (!LETTER_RE.test(term))
         return null;
-    const table = CYRILLIC_RE.test(term) ? layout.from : layout.to;
-    const mapped = mapTerm(term, table);
+    if (!CYRILLIC_RE.test(term))
+        return null;
+    const mapped = mapTerm(term, layout.from);
     return mapped !== null && mapped !== term ? mapped : null;
+}
+
+/**
+ * Checks whether any term contains Cyrillic characters.
+ */
+function hasCyrillic(terms) {
+    return terms.some(term => CYRILLIC_RE.test(term));
 }
 
 /**
  * Строит список запросов для поиска.
  * Первый элемент — всегда исходный запрос.
- * Далее — запросы, где каждый термин переведён в RU или UA (если перевод возможен).
+ * Далее — запросы, где каждый термин переведён из кириллицы в QWERTY (RU и UA варианты).
  * Дубликаты удаляются.
+ *
+ * Когда исходный запрос содержит кириллицу, он остаётся в списке,
+ * чтобы GNOME Shell одновременно показал приложения с кириллическими именами
+ * (например, «ашкудишки.txt») и результаты перевода (например, Firefox для «ашку»).
  *
  * @param {string[]} terms — термины из поиска Shell
  * @returns {string[][]} список запросов, каждый запрос — массив терминов
@@ -107,6 +119,8 @@ export function buildQueries(terms) {
     }
     return result;
 }
+
+export { hasCyrillic };
 
 /**
  * Объединяет наборы идентификаторов результатов в порядке появления, без дубликатов.
